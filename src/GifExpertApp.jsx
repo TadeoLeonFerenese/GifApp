@@ -8,7 +8,7 @@ export const GifExpertApp = () => {
   const onAddCategories = (NewCategory) => {
     if (categories.includes(NewCategory)) return;
     // categories.push(NewCategory); //!ESTO NO SE USA NUNCA, SE USAN HOOKS
-    setCategories([...categories, NewCategory]);
+    setCategories([NewCategory, ...categories]);
   };
 
   return (

@@ -1,29 +1,23 @@
-import { useEffect, useState } from "react"; // useEffect se usa para disparar un efecto secundario cuando el componente se renderiza pro primera vez
-import { getGifs } from "../helpers/getGifs";
+import { Gifitem } from "./GifItem";
+import { useFetchGifs } from "../hooks/useFetchGifs";
 
 export const GifGrid = ({ category }) => {
-  const [images, setImages] = useState([]);
+  const { images, isLoading } = useFetchGifs(category);
 
-  const getImages = async () => {
-    const newImages = await getGifs(category);
-    setImages(newImages);
-  };
-
-  useEffect(() => {
-    //en useEffect no se puede usar funciones asyncronas por eso se remplaza entre una de las tantas con ".then"
-    getImages();
-  }, []);
+  console.log({ isLoading });
 
   return (
     <>
       <h3>{category}</h3>
-      <ol>
+      {isLoading ? <h2>cargando...</h2> : null} {/*Ami me gusta de esta forma*/}
+      {/* {isLoading && <h2>cargando...</h2>} esta es otra forma */}
+      <div className="card-grid">
         {/* Este trozo de codigo lo que hace es traerme los titulos de forma
         dinamica mapeando primero la data */}
-        {images.map(({ title, id }) => (
-          <li key={id}>{title}</li>
+        {images.map((image) => (
+          <Gifitem key={image.id} {...image} />
         ))}
-      </ol>
+      </div>
     </>
   );
 };
